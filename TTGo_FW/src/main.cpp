@@ -22,6 +22,9 @@ volatile bool irqButton = false;
 bool sessionStored = false;
 bool sessionSent = false;
 
+uint32_t dist; //distance (in cm)
+uint32_t steps; // steo counter
+
 void initHikeWatch()
 {
     // LittleFS
@@ -119,7 +122,7 @@ void saveStepsToFile(uint32_t step_count)
     writeFile(LITTLEFS, "/steps.txt", buffer);
 }
 
-void saveDistanceToFile(float distance)
+void saveDistanceToFile(uint32_t distance)
 {
     char buffer[10];
     itoa(distance, buffer, 10);
@@ -131,7 +134,7 @@ void deleteSession()
     deleteFile(LITTLEFS, "/id.txt");
     deleteFile(LITTLEFS, "/distance.txt");
     deleteFile(LITTLEFS, "/steps.txt");
-    deleteFile(LITTLEFS, "/coord.txt");
+    //deleteFile(LITTLEFS, "/coord.txt");
 }
 
 void setup()
@@ -163,7 +166,7 @@ void loop()
         watch->tft->fillScreen(TFT_BLACK);
         watch->tft->setTextFont(4);
         watch->tft->setTextColor(TFT_WHITE, TFT_BLACK);
-        watch->tft->drawString("NatureTrack",  45, 25, 4);
+        watch->tft->drawString("NatureTrack",  50, 25, 4);
         watch->tft->drawString("Press button", 50, 80);
         watch->tft->drawString("to start session", 40, 110);
 
@@ -218,7 +221,7 @@ void loop()
             {
                 delay(1000);
                 watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
-                watch->tft->drawString("NatureTrack",  45, 25, 4);
+                watch->tft->drawString("NatureTrack",  50, 25, 4);
                 watch->tft->drawString("Press button", 50, 80);
                 watch->tft->drawString("to start session", 40, 110);
                 exitSync = false;
@@ -251,8 +254,8 @@ void loop()
     {
         /* Hiking session initialisation */
         watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
-        watch->tft->setCursor(45, 70);
-        watch->tft->print("Initialising");
+        watch->tft->setCursor(55, 100);
+        watch->tft->drawString("Initialising", 55, 100);
         sensor->begin();
         delay(1000);
         state = 3;
@@ -261,8 +264,8 @@ void loop()
     case 3:
     {
         /* Hiking session ongoing */
-        uint32_t dist;
-        uint32_t steps;
+        dist = 0;
+        steps = 0;
         watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
         watch->tft->drawString("Starting hike", 45, 100);
         delay(1000);
@@ -278,16 +281,17 @@ void loop()
                 irqBMA = false;
                 steps = sensor->getCounter();
                 dist = steps *75;                   //75cm per step
+                watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
                 watch->tft->setCursor(45, 70);
                 watch->tft->print("Steps: ");
                 watch->tft->print(steps);
                 
-                if (dist<100000){
+                if (dist<100000){//Distance in meters if < 1000m
                     watch->tft->setCursor(45, 100);
                     watch->tft->print("Dist: ");
                     watch->tft->print(dist/100);
                     watch->tft->print(" m");
-                }else{
+                }else{//Distance in km if >= 1km
                     watch->tft->setCursor(45, 100);
                     watch->tft->print("Dist: ");
                     watch->tft->print(dist/100000);
@@ -310,13 +314,34 @@ void loop()
     }
     case 4:
     {
-        //Save hiking session data
         watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
+        watch->tft->drawString("Session finished", 30, 40);
         watch->tft->setCursor(45, 70);
-        watch->tft->print("BOO!");
-        watch->tft->setCursor(45, 100);
-        watch->tft->print("U scared? :P");
-        delay(2000);
+        watch->tft->print("Steps: ");
+        watch->tft->print(steps);
+        watch->tft->setCursor(30, 100);
+        watch->tft->print("Distance: ");
+        if (dist<100000){
+            watch->tft->print(dist/100);
+            watch->tft->print(" m");
+        }else{
+            watch->tft->print("Dist: ");
+            watch->tft->print(dist/100000);
+            watch->tft->print(" km");
+        }
+        watch->tft->drawString("Saving session",30, 130);
+        watch->tft->drawString("data...", 75, 160);
+
+        //Save hiking session data
+        saveIdToFile(sessionId);
+        saveStepsToFile(steps);
+        saveDistanceToFile(dist);
+        sessionStored = true;
+        delay(3000);
+        watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
+        watch->tft->setCursor(15, 70);
+        watch->tft->print("Session data saved");
+        delay(1000);
         state = 1;  
         break;
     }
