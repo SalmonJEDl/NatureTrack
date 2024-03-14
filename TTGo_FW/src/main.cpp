@@ -23,7 +23,7 @@ bool sessionStored = false;
 bool sessionSent = false;
 
 uint32_t dist; //distance (in cm)
-uint32_t steps; // steo counter
+uint32_t steps; // step counter
 
 void initHikeWatch()
 {
@@ -170,6 +170,11 @@ void loop()
         watch->tft->drawString("Press button", 50, 80);
         watch->tft->drawString("to start session", 40, 110);
 
+        //Used for finding the BT address
+        //watch->tft->setCursor(45, 140);
+        //watch->tft->print(SerialBT.getBtAddressString());
+            
+
         bool exitSync = false;
 
         //Bluetooth discovery
@@ -275,7 +280,6 @@ void loop()
         watch->tft->setCursor(45, 100);
         watch->tft->print("Dist: 0 m");
 
-
         while(!irqButton){
             if (irqBMA){
                 irqBMA = false;
@@ -299,6 +303,7 @@ void loop()
                 }
                 
             }
+
             
         }
         irqButton = false;
@@ -325,7 +330,6 @@ void loop()
             watch->tft->print(dist/100);
             watch->tft->print(" m");
         }else{
-            watch->tft->print("Dist: ");
             watch->tft->print(dist/100000);
             watch->tft->print(" km");
         }
