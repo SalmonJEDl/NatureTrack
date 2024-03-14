@@ -185,9 +185,13 @@ void loop()
             {
                 char incomingChar = SerialBT.read();
                 if (incomingChar == 'c' and sessionStored and not sessionSent)
-                {
+                {   
                     sendSessionBT();
+                    delay(1000);
                     sessionSent = true;
+                    watch->tft->fillRect(0, 0, 240, 240, TFT_BLACK);
+                    watch->tft->drawString("Session sent!", 50, 80);
+                    delay(1000);
                 }
 
                 if (sessionSent && sessionStored) {
