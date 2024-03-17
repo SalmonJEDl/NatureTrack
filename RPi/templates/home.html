@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nature Track</title>
+    <link href="{{ url_for('static', filename='css/style.css')}}" rel="stylesheet" />
+</head>
+
+ <!--f"INSERT INTO {DB_SESSION_TABLE['name']} VALUES ({s.id}, {s.km}, {s.steps}, {s.kcal})"-->
+
+<body>
+    <h1>Nature Track</h1>
+
+    {% if False %}
+    {% for item in sessions %}
+        <p>Session id: {{ item.id }}</p>
+        <p>Steps: {{ item.steps }}</p>
+        <p>Distance travelled: {{ item.km/100 }} m</p>
+        <p>Calories burnt: {{ item.kcal }} kcal</p>
+        <p>--------------------------------</p>
+    {% endfor %}
+    {% endif %}
+
+    <!--html table-->
+
+    <table>
+        <tr>
+          <th>Session id</th>
+          <th>Steps</th>
+          <th>Distance travelled (km)</th>
+          <th>Calories burnt (kcal)</th>
+        </tr>
+
+        {% for item in sessions %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.steps }}</td>
+            <td>{{ item.km/100|round }}</td>
+            <td>{{ item.kcal|round }}</td>
+        </tr>
+        {% endfor %}
+
+</body>
+
+</html>
