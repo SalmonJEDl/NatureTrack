@@ -7,7 +7,7 @@
     <link href="{{ url_for('static', filename='css/style.css')}}" rel="stylesheet" />
 </head>
 
- <!--f"INSERT INTO {DB_SESSION_TABLE['name']} VALUES ({s.id}, {s.km}, {s.steps}, {s.kcal})"-->
+ <!--f"INSERT INTO {DB_SESSION_TABLE['name']} VALUES ({s.id}, {s.cm}, {s.steps}, {s.kcal})"-->
 
 <body>
     <h1>NatureTrack</h1>
@@ -16,7 +16,7 @@
     {% for item in sessions %}
         <p>Session id: {{ item.id }}</p>
         <p>Steps: {{ item.steps }}</p>
-        <p>Distance travelled: {{ item.km/100 }} m</p>
+        <p>Distance travelled: {{ item.cm/100 }} m</p>
         <p>Calories burnt: {{ item.kcal }} kcal</p>
         <p>--------------------------------</p>
     {% endfor %}
@@ -36,7 +36,7 @@
         <tr>
             <td>{{ item.id }}</td>
             <td>{{ item.steps }}</td>
-            <td>{{ item.km/100|round }}</td>
+            <td>{{ item.cm/100|round }}</td>
             <td>{{ item.kcal|round }}</td>
         </tr>
         {% endfor %}

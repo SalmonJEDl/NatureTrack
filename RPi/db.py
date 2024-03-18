@@ -9,7 +9,7 @@ DB_SESSION_TABLE = {
     "name": "sessions",
     "cols": [
         "session_id integer PRIMARY KEY",
-        "km integer",
+        "cm integer",
         "steps integer",
         "burnt_kcal integer",
     ]
@@ -57,7 +57,7 @@ class HubDatabase:
             self.lock.acquire()
 
             try:
-                self.cur.execute(f"INSERT INTO {DB_SESSION_TABLE['name']} VALUES ({s.id}, {s.km}, {s.steps}, {s.kcal})")
+                self.cur.execute(f"INSERT INTO {DB_SESSION_TABLE['name']} VALUES ({s.id}, {s.cm}, {s.steps}, {s.kcal})")
             except sqlite3.IntegrityError:
                 print("WARNING: Session ID already exists in database! Aborting saving current session.")
 

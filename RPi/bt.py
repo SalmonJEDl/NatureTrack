@@ -120,7 +120,7 @@ class HubBluetooth:
         """Transforms a single message into a hike.HikeSession object.
 
         A single message is in the following format with 0->inf number of latitude and longitude pairs:
-            id;steps;km;lat1,long1;lat2,long2;...;\\n
+            id;steps;cm;lat1,long1;lat2,long2;...;\\n
 
         For example:
             b'4;2425;324;64.83458747762428,24.83458747762428;...,...;\\n'
@@ -143,7 +143,7 @@ class HubBluetooth:
         hs = hike.HikeSession()
         hs.id     = int(parts[0])
         hs.steps  = int(parts[1])
-        hs.km     = float(parts[2])
+        hs.cm     = float(parts[2])
 
         def cvt_coord(c):
             sc = c.split(',')
