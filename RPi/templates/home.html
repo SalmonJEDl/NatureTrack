@@ -36,8 +36,8 @@
         <tr>
             <td>{{ item.id }}</td>
             <td>{{ item.steps }}</td>
-            <td>{{ item.cm/100|round }}</td>
-            <td>{{ item.kcal|round }}</td>
+            <td>{{ item.cm/100|round|int}}</td>
+            <td>{{ item.kcal|round|int}}</td>
         </tr>
         {% endfor %}
 
