@@ -40,7 +40,8 @@ For developing the RPi application, the following dependencies are needed: pyblu
 Ideas for future development on the product include:
 
 1. Communication between the smart watch and the RPi over WIFI
-2. GPS tracking for more accurate travel distance and calorie calculation
-3. More vivid and reactive graphical user interface (GUI) for the watch
+2. More vivid and reactive graphical user interface (GUI) for the watch
+3. Integrating RPi functionalities into a single application to automate its execution
+4. Optimizing Bluetooth discover and interrupt handling on the smart watch
 
 Have fun developing the smart watch!
